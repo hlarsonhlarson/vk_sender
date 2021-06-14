@@ -5,26 +5,6 @@ import time
 from bs4 import BeautifulSoup
 
 
-driver = webdriver.Firefox()
-driver.get('https://vk.com/im')
-
-
-mail_box = driver.find_element(By.ID, 'email')
-mail_box.send_keys('your_mail')
-
-
-pass_box = driver.find_element(By.ID, 'pass')
-pass_box.send_keys('your_pass')
-
-login_button = driver.find_element(By.ID, 'login_button')
-login_button.click()
-
-time.sleep(2)
-
-driver.get('https://vk.com/friends')
-
-my_message = 'Простите за этот спам!!!'
-
 def scrolling_down():
     SCROLL_PAUSE_TIME = 0.5
     # Get scroll height
@@ -41,18 +21,9 @@ def scrolling_down():
             break
         last_height = new_height
 
-scrolling_down()
-
-friends = driver.find_elements(By.XPATH, '//*[contains(@id, \'friends_user_row\')]')
-
-print(len(friends))
-
-
 def friends_sender(friends):
     i = 0
     for friend in friends:
-        if i == 0:
-            break
         print(friend.text)
         action = friend.find_element(By.CLASS_NAME, 'friends_field_act')
         action.click()
@@ -67,6 +38,33 @@ def friends_sender(friends):
         cross.click()
         print('Hello ' + str(i))
 
-friends_sender(friends)
+if __name__ == '__main__':
+    driver = webdriver.Firefox()
+    driver.get('https://vk.com/im')
 
-driver.close()
+
+    mail_box = driver.find_element(By.ID, 'email')
+    mail_box.send_keys('your_mail')
+
+
+    pass_box = driver.find_element(By.ID, 'pass')
+    pass_box.send_keys('your_pass')
+
+    login_button = driver.find_element(By.ID, 'login_button')
+    login_button.click()
+
+    time.sleep(2)
+
+    driver.get('https://vk.com/friends')
+
+    scrolling_down()
+
+    friends = driver.find_elements(By.XPATH, '//*[contains(@id, \'friends_user_row\')]')
+
+    print(len(friends))
+
+    my_message = 'Простите за этот спам!!!'
+
+    friends_sender(friends)
+
+    driver.close()
